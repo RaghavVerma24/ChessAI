@@ -25,6 +25,13 @@ class Board:
         if piece.name == 'pawn':
             self.check_promotion(piece, final)
 
+        # castle king
+        if piece.name == 'king':
+            if self.castling(initial, final):
+                diff = final.col - initial.col
+                rook = piece.left_rook if (diff < 0) else piece.right_rook
+                self.move(rook, rook.moves[-1])
+
         # move on board
         piece.moved = True
 
@@ -40,6 +47,9 @@ class Board:
     def check_promotion(self, piece, final):
         if final.row == 0 or final.row == 7:
             self.squares[final.row][final.col].piece = Queen(piece.color)
+
+    def castling(self, initial, final):
+        return abs(initial.col - final.col) == 2
 
     def calc_moves(self, piece, row, col):
 
@@ -168,9 +178,54 @@ class Board:
                         # append
                         piece.add_move(move)
 
-            # king castling
+            # castling moves
+            if not piece.moved:
 
-            # queen castling
+                # king castling
+                right_rook = self.squares[row][7].piece
+                if right_rook.name == 'rook':
+                    if not right_rook.moved:
+                        for c in range(5,7):
+                            if self.squares[row][c].has_piece():
+                                break
+
+                            if c == 6:
+                                piece.right_rook = right_rook
+
+                                # rook move
+                                initial = Square(row, 7)
+                                final = Square(row, 5)
+                                move = Move(initial, final)
+                                right_rook.add_move(move)
+
+                                # king move
+                                initial = Square(row, col)
+                                final = Square(row, 6)
+                                move = Move(initial, final)
+                                piece.add_move(move)
+
+                # queen castling
+                left_rook = self.squares[row][0].piece
+                if left_rook.name == 'rook':
+                    if not left_rook.moved:
+                        for c in range(1,4):
+                            if self.squares[row][c].has_piece():
+                                break
+
+                            if c == 3:
+                                piece.left_rook = left_rook
+
+                                # rook move
+                                initial = Square(row, 0)
+                                final = Square(row, 3)
+                                move = Move(initial, final)
+                                left_rook.add_move(move)
+
+                                # king move
+                                initial = Square(row, col)
+                                final = Square(row, 2)
+                                move = Move(initial, final)
+                                piece.add_move(move)
 
         if piece.name == 'pawn':
             pawn_moves()
