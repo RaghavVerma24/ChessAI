@@ -8,12 +8,30 @@ class Board:
 
     def __init__(self):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
-
+        self.last_move = None
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
 
-    # Find all valid moves for a piece at a specific position
+    def move(self, piece, move):
+        initial = move.initial
+        final = move.final
+
+        # update console board move
+        self.squares[initial.row][initial.col].piece = None
+        self.squares[final.row][final.col].piece = piece
+
+        # move on board
+        piece.moved = True
+
+        # clear valid moves
+        piece.clear_moves()
+
+        # set last move
+        self.last_move = move
+
+    def valid_move(self, piece, move):
+        return move in piece.moves
 
     def calc_moves(self, piece, row, col):
 
@@ -133,7 +151,7 @@ class Board:
                 move_row, move_col = possible_move
 
                 if Square.in_range(move_row,move_col):
-                    if self.squares[move_row][move_col].is_empty_or_rival(piece.color):
+                    if self.squares[move_row][move_col].isempty_or_rival(piece.color):
                         # create squares for new move
                         initial = Square(row, col)
                         final = Square(move_row, move_col)
@@ -158,15 +176,12 @@ class Board:
             straightline_moves([(-1,1),(-1,-1),(1,1),(1,-1),(-1,0),(0,1),(1,0),(0,-1)])
         elif piece.name == 'king':
             king_moves()
-        
-
-
+    
     def _create(self):
         for row in range(ROWS):
             for col in range(COLS):
                 self.squares[row][col] = Square(row, col)
 
-    # Create chess pieces
     def _add_pieces(self, color):
         if color == 'white':
             row_pawn, row_other = (6, 7)
