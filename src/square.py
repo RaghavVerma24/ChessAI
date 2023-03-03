@@ -10,7 +10,7 @@ class Square:
         return self.piece != None
     
     def isempty_or_rival(self, color):
-        return self.isempty(color) or self.has_rival_piece(color)
+        return self.isempty() or self.has_rival_piece(color)
     
     def has_team_piece(self, color):
         return self.has_piece() and self.piece.color == color
@@ -18,7 +18,7 @@ class Square:
     def has_rival_piece(self, color):
         return self.has_piece() and self.piece.color != color
     
-    def isempty(self, color):
+    def isempty(self):
         return not self.has_piece()
 
     @staticmethod
