@@ -116,6 +116,36 @@ class Board:
                     # incrementing the number of squares for movement
                     move_row, move_col = move_row + row_incr, move_col + col_incr,
 
+        def king_moves():
+            adjs = [
+                (row-1,col),
+                (row-1,col+1),
+                (row,col+1),
+                (row+1,col+1),
+                (row+1,col),
+                (row+1,col-1),
+                (row,col-1),
+                (row-1,col-1),
+            ]
+
+            # normal move
+            for possible_move in adjs:
+                move_row, move_col = possible_move
+
+                if Square.in_range(move_row,move_col):
+                    if self.squares[move_row][move_col].is_empty_or_rival(piece.color):
+                        # create squares for new move
+                        initial = Square(row, col)
+                        final = Square(move_row, move_col)
+                        # create new move
+                        move = Move(initial, final)
+                        # append
+                        piece.add_move(move)
+
+            # king castling
+
+            # queen castling
+
         if piece.name == 'pawn':
             pawn_moves()
         elif piece.name == 'knight':
@@ -127,7 +157,7 @@ class Board:
         elif piece.name == 'queen':
             straightline_moves([(-1,1),(-1,-1),(1,1),(1,-1),(-1,0),(0,1),(1,0),(0,-1)])
         elif piece.name == 'king':
-            pass
+            king_moves()
         
 
 
