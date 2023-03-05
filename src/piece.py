@@ -25,7 +25,7 @@ class Piece:
         self.moves = []
 
     def all_moves(self):
-        print(self.moves)
+        return True if len(self.moves) > 0 else False
 
 class Pawn(Piece):
 

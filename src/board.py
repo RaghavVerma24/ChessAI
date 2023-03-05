@@ -52,6 +52,7 @@ class Board:
         return abs(initial.col - final.col) == 2
 
     def in_check(self, piece, move):
+
         temp_piece = copy.deepcopy(piece)
         temp_board = copy.deepcopy(self)
         temp_board.move(temp_piece, move, testing=True)
@@ -67,17 +68,23 @@ class Board:
 
                             attacking_color = attacking_piece.color
                             # calc moves of all opposing color pieces (attacking color)
-                            # color_piece = self.squares[0][2].piece
-                            # temp_board.calc_moves(color_piece, 0, 2, bool=False)
-                            # color_piece.all_moves()                            
+                            self.checkmate(attacking_color)
 
                             return True
 
         return False
 
-    def checkmate(self):
-        pass
-
+    def checkmate(self, color):
+        temp_board = copy.deepcopy(self)
+        for row in range(ROWS):
+            for col in range(COLS):
+                # do try catch for all pieces
+                color_piece = self.squares[row][col].piece
+                temp_board.calc_moves(color_piece, row, col, bool=False)
+                if color_piece.all_moves():
+                    print(color_piece.name)
+                    print(row, col)
+ 
     def calc_moves(self, piece, row, col, bool=True):
 
         def pawn_moves():
@@ -320,19 +327,22 @@ class Board:
                                     # append new move King 
                                     piece.add_move(moveKing)
 
-        if piece.name == 'pawn':
-            pawn_moves()
-        elif piece.name == 'knight':
-            knight_moves()
-        elif piece.name == 'bishop':
-            straightline_moves([(-1,1),(-1,-1),(1,1),(1,-1)])
-        elif piece.name == 'rook':
-            straightline_moves([(-1,0),(0,1),(1,0),(0,-1)])
-        elif piece.name == 'queen':
-            straightline_moves([(-1,1),(-1,-1),(1,1),(1,-1),(-1,0),(0,1),(1,0),(0,-1)])
-        elif piece.name == 'king':
-            king_moves()
-    
+        try: 
+            if piece.name == 'pawn':
+                pawn_moves()
+            elif piece.name == 'knight':
+                knight_moves()
+            elif piece.name == 'bishop':
+                straightline_moves([(-1,1),(-1,-1),(1,1),(1,-1)])
+            elif piece.name == 'rook':
+                straightline_moves([(-1,0),(0,1),(1,0),(0,-1)])
+            elif piece.name == 'queen':
+                straightline_moves([(-1,1),(-1,-1),(1,1),(1,-1),(-1,0),(0,1),(1,0),(0,-1)])
+            elif piece.name == 'king':
+                king_moves()
+        except:
+            pass
+            
     def _create(self):
         for row in range(ROWS):
             for col in range(COLS):
