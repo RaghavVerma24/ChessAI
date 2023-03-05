@@ -12,15 +12,15 @@ class Start:
     def starting_screen(self, screen):
 
         self.button(screen, 250, 70, "Play with Player", (127, 166,
-                    80), (149, 187, 74), starting, btn_seperator=0)
+                    80), (149, 187, 74), btn_seperator=0)
         self.button(screen, 250, 70, "Play with AI",
-                    (56, 54, 52), (74, 72, 70), starting)
+                    (56, 54, 52), (74, 72, 70))
 
         screen.fill(self.background)
         self.text(screen)
 
 
-    def button(self, screen, btn_width, btn_height, text, color1, color2, starting, btn_seperator=90):
+    def button(self, screen, btn_width, btn_height, text, color1, color2, btn_seperator=90):
         button = Button(
             # Mandatory Parameters
             screen,
@@ -38,7 +38,7 @@ class Start:
             hoverColour=color2,
             pressedColour=color2,
             radius=20,
-            onClick=lambda: self.start(starting)
+            onClick=lambda: print('clicked')
         )
 
     def text(self, screen):

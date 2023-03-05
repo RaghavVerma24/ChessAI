@@ -64,13 +64,24 @@ class Board:
 
                     for attacking_move in attacking_piece.moves:
                         if isinstance(attacking_move.final.piece, King):
+
+                            attacking_color = attacking_piece.color
+                            # calc moves of all opposing color pieces (attacking color)
+                            # color_piece = self.squares[0][2].piece
+                            # temp_board.calc_moves(color_piece, 0, 2, bool=False)
+                            # color_piece.all_moves()                            
+
                             return True
 
         return False
 
+    def checkmate(self):
+        pass
+
     def calc_moves(self, piece, row, col, bool=True):
 
         def pawn_moves():
+        
             steps = 1 if piece.moved else 2
 
             # vertical moves

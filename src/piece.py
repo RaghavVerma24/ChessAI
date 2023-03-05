@@ -24,6 +24,9 @@ class Piece:
     def clear_moves(self):
         self.moves = []
 
+    def all_moves(self):
+        print(self.moves)
+
 class Pawn(Piece):
 
     def __init__(self, color):

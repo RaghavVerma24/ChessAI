@@ -8,7 +8,6 @@ from move import Move
 from start import Start
 from db import Db
 
-
 import pygame_widgets
 
 class Main:
@@ -32,7 +31,6 @@ class Main:
         db.get_plays()
         # start.starting_screen(screen)
 
-
         while True:
 
             game.show_bg(screen)
@@ -45,7 +43,6 @@ class Main:
                 dragger.update_blit(screen)
 
             for event in pygame.event.get():
-
                 # click piece
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     dragger.update_mouse(event.pos)
@@ -55,7 +52,7 @@ class Main:
 
                     # Check if game square has a piece
                     if board.squares[clicked_row][clicked_col].has_piece():
-                        piece = board.squares[clicked_row][clicked_col].piece\
+                        piece = board.squares[clicked_row][clicked_col].piece
                         
                         # find next player turn
                         if piece.color == game.next_player:
