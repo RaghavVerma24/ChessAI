@@ -6,5 +6,5 @@ class Db:
         pass
 
     def get_plays(self):
-        conn = sqlite3.connect('test.db')
+        conn = sqlite3.connect('games.db')
         print ("Opened database successfully");
