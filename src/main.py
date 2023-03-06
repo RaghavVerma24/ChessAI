@@ -22,6 +22,7 @@ class Main:
         self.db = Db()
         self.starting = True
         self.background = (49, 46, 43)
+        self.ai = False
 
     def starting_screen(self, screen):
         screen.fill(self.background)
@@ -68,6 +69,9 @@ class Main:
         while True:
             if self.starting:
                 self.starting_screen(screen)
+            elif not self.starting and self.ai:
+                # add ai implementation
+                pass
             else:
                 game.show_bg(screen)
                 game.show_last_move(screen)
@@ -85,6 +89,9 @@ class Main:
                         if self.starting:
                             if 275 <= mouse[0] <= 525 and 365 <= mouse[1] <= 435:
                                 self.starting = False
+                            elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
+                                self.starting = False
+                                self.ai = True
 
                 # click piece
                 else:
