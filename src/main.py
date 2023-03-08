@@ -104,6 +104,7 @@ class Main:
                                 self.starting = False
                                 self.ai_starting = True
                         board.all_possible_moves(game.next_player)
+                        board.create_child_boards()
 
                 # click piece
                 else:

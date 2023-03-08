@@ -18,7 +18,6 @@ class Board:
         self._add_pieces('black')
 
     def add_children(self, child):
-
         # Add all boards that have move possiblities
         child.parent = self
         self.children.append(child)
@@ -33,15 +32,18 @@ class Board:
                 except:
                     continue
 
-        print(self.possible_moves)
-
         # loop through all pieces and find possible moves for color
 
-    def generate_moves_ai(self):
-        
+    def create_child_boards(self):
+        for i in range(len(self.possible_moves)):
+            temp_board = copy.deepcopy(self)
+            move = self.possible_moves[i][0]
+            row = self.possible_moves[i][1]
+            col = self.possible_moves[i][2]
 
-        temp_board = copy.deepcopy(self)
-        print(temp_board)
+            piece = self.squares[row][col].piece
+            # self.move(piece, move)
+        # call add_children when boards are made
         # takes possible moves and creates an array of boards that represent child boards
         # self.add_children(child)
         pass
@@ -138,11 +140,11 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
-                                self.possible_moves.append(move)
+                                self.possible_moves.append((move, row, col))
                                 piece.add_move(move)
                         else:
                             # append new move
-                            self.possible_moves.append(move)
+                            self.possible_moves.append((move, row, col))
                             piece.add_move(move)                            
                     # blocked by another piece
                     else:
@@ -167,11 +169,11 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
-                                self.possible_moves.append(move)
+                                self.possible_moves.append((move, row, col))
                                 piece.add_move(move)
                         else:
                             # append new move
-                            self.possible_moves.append(move)
+                            self.possible_moves.append((move, row, col))
                             piece.add_move(move)
         
         def knight_moves():
@@ -202,13 +204,13 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
-                                self.possible_moves.append(move)
+                                self.possible_moves.append((move, row, col))
                                 piece.add_move(move)
                             else:
                                 break
                         else:
                             # append new move
-                            self.possible_moves.append(move)
+                            self.possible_moves.append((move, row, col))
                             piece.add_move(move)  
 
         def straightline_moves(incrs):
@@ -232,9 +234,11 @@ class Board:
                             if bool:
                                 if not self.in_check(piece, move):
                                     # append new move
+                                    self.possible_moves.append((move, row, col))
                                     piece.add_move(move)
                             else:
                                 # append new move
+                                self.possible_moves.append((move, row, col))
                                 piece.add_move(move)  
 
                         # has enemy piece
@@ -243,9 +247,11 @@ class Board:
                             if bool:
                                 if not self.in_check(piece, move):
                                     # append new move
+                                    self.possible_moves.append((move, row, col))
                                     piece.add_move(move)
                             else:
                                 # append new move
+                                self.possible_moves.append((move, row, col))
                                 piece.add_move(move)
                             break
                         
@@ -287,13 +293,13 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
-                                self.possible_moves.append(move)
+                                self.possible_moves.append((move, row, col))
                                 piece.add_move(move)
                             else:
                                 break
                         else:
                             # append new move
-                            self.possible_moves.append(move)
+                            self.possible_moves.append((move, row, col))
                             piece.add_move(move)
 
             # castling moves
