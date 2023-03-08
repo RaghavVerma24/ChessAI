@@ -9,9 +9,21 @@ class Board:
     def __init__(self):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
+        self.children = []
+        self.parent = None
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
+
+    def add_child(self, child):
+
+        # Add all boards that have move possiblities
+        child.parent = self
+        self.children.append(child)
+
+    def generate_moves_ai(self, board):
+        # takes possible moves and creates an array of boards that represent child boards
+        pass
 
     def move(self, piece, move, testing = False):
         initial = move.initial
