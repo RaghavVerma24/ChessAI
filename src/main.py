@@ -73,8 +73,16 @@ class Main:
             if self.starting:
                 self.starting_screen(screen)
             elif not self.starting and self.ai_starting:
-                ai.heuristic()
-                break
+                # ai.heuristic()
+                game.show_bg(screen)
+                game.show_last_move(screen)
+                game.show_moves(screen)
+                game.show_pieces(screen)
+                game.show_hover(screen)
+
+                if dragger.dragging:
+                    dragger.update_blit(screen)
+
             else:
                 game.show_bg(screen)
                 game.show_last_move(screen)
@@ -95,6 +103,7 @@ class Main:
                             elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
                                 self.starting = False
                                 self.ai_starting = True
+                        board.all_possible_moves(game.next_player)
 
                 # click piece
                 else:
@@ -154,6 +163,7 @@ class Main:
                             # check valid move
                             if board.valid_move(dragger.piece, move):
                                 board.move(dragger.piece, move)
+                                ai.heuristic(board.see_board())
                                 # draw piece on board
                                 game.show_bg(screen)
                                 game.show_last_move(screen)
@@ -162,6 +172,7 @@ class Main:
                                 game.next_turn()
 
                         dragger.undrag_piece()
+                        # board.generate_moves_ai()
 
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_r:

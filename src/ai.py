@@ -12,7 +12,7 @@ class Ai:
         # For each board loop through the child boards and get a herustic evalution (get number of points on board) and alternative between min and max until you reach the current tree node for the board
         pass
 
-    def heuristic(self):
+    def heuristic(self, board):
         # params: board, maximizing color
         # determine how good a position is for a slect player
 
@@ -27,7 +27,6 @@ class Ai:
 
         white_eval = 0
         black_eval = 0
-        board = self.board.see_board()
         for row in range(ROWS):
             for col in range(COLS):
                 if board[row][col][0] == "b":

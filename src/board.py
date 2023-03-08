@@ -10,19 +10,40 @@ class Board:
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
         self.children = []
+        self.possible_moves = []
         self.parent = None
+        self.board = [["" for i in range(ROWS)] for j in range(COLS)]
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
 
-    def add_child(self, child):
+    def add_children(self, child):
 
         # Add all boards that have move possiblities
         child.parent = self
         self.children.append(child)
 
-    def generate_moves_ai(self, board):
+    def all_possible_moves(self, color):
+        self.possible_moves = []
+        for row in range(ROWS):
+            for col in range(COLS):
+                try:
+                    if self.squares[row][col].piece.color == color:
+                        self.calc_moves(self.squares[row][col].piece, row, col)
+                except:
+                    continue
+
+        print(self.possible_moves)
+
+        # loop through all pieces and find possible moves for color
+
+    def generate_moves_ai(self):
+        
+
+        temp_board = copy.deepcopy(self)
+        print(temp_board)
         # takes possible moves and creates an array of boards that represent child boards
+        # self.add_children(child)
         pass
 
     def move(self, piece, move, testing = False):
@@ -32,7 +53,6 @@ class Board:
         # update console board move
         self.squares[initial.row][initial.col].piece = None
         self.squares[final.row][final.col].piece = piece
-
         # pawn promotion
         if piece.name == 'pawn':
             self.check_promotion(piece, final)
@@ -118,9 +138,11 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
+                                self.possible_moves.append(move)
                                 piece.add_move(move)
                         else:
                             # append new move
+                            self.possible_moves.append(move)
                             piece.add_move(move)                            
                     # blocked by another piece
                     else:
@@ -145,9 +167,11 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
+                                self.possible_moves.append(move)
                                 piece.add_move(move)
                         else:
                             # append new move
+                            self.possible_moves.append(move)
                             piece.add_move(move)
         
         def knight_moves():
@@ -178,11 +202,13 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
+                                self.possible_moves.append(move)
                                 piece.add_move(move)
                             else:
                                 break
                         else:
                             # append new move
+                            self.possible_moves.append(move)
                             piece.add_move(move)  
 
         def straightline_moves(incrs):
@@ -261,11 +287,13 @@ class Board:
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
+                                self.possible_moves.append(move)
                                 piece.add_move(move)
                             else:
                                 break
                         else:
                             # append new move
+                            self.possible_moves.append(move)
                             piece.add_move(move)
 
             # castling moves
@@ -356,21 +384,22 @@ class Board:
             pass
 
     def see_board(self):
-        board = [["" for i in range(ROWS)] for j in range(COLS)]
         for row in range(ROWS):
             for col in range(COLS):
                 try:
                     name = self.squares[row][col].piece.name
                     color = self.squares[row][col].piece.color
-                    board[row][col] = str(color[0]) + str(name[:2])
+                    self.board[row][col] = str(color[0]) + str(name[:2])
                 except:
-                    board[row][col] = "---"
+                    self.board[row][col] = "---"
 
         for row in range(ROWS):
             for col in range(COLS):
-                print(board[row][col], end=" ")
+                print(self.board[row][col], end=" ")
             print()
-        return board
+        print()
+        
+        return self.board
 
     def _create(self):
         for row in range(ROWS):
