@@ -6,6 +6,7 @@ from game import Game
 from square import Square
 from move import Move
 from db import Db
+from ai import Ai
 
 import pygame_widgets
 from pygame_widgets.button import Button
@@ -20,9 +21,10 @@ class Main:
         pygame.display.set_caption('Chess')
         self.game = Game()
         self.db = Db()
+        self.ai = Ai()
         self.starting = True
         self.background = (49, 46, 43)
-        self.ai = False
+        self.ai_starting = False
 
     def starting_screen(self, screen):
         screen.fill(self.background)
@@ -63,15 +65,16 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         db = self.db
+        ai = self.ai
 
         db.get_plays()
 
         while True:
             if self.starting:
                 self.starting_screen(screen)
-            elif not self.starting and self.ai:
-                # add ai implementation
-                pass
+            elif not self.starting and self.ai_starting:
+                ai.heuristic()
+                break
             else:
                 game.show_bg(screen)
                 game.show_last_move(screen)
@@ -91,7 +94,7 @@ class Main:
                                 self.starting = False
                             elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
                                 self.starting = False
-                                self.ai = True
+                                self.ai_starting = True
 
                 # click piece
                 else:

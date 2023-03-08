@@ -342,7 +342,24 @@ class Board:
                 king_moves()
         except:
             pass
-            
+
+    def see_board(self):
+        board = [["" for i in range(ROWS)] for j in range(COLS)]
+        for row in range(ROWS):
+            for col in range(COLS):
+                try:
+                    name = self.squares[row][col].piece.name
+                    color = self.squares[row][col].piece.color
+                    board[row][col] = str(color[0]) + str(name[:2])
+                except:
+                    board[row][col] = "---"
+
+        for row in range(ROWS):
+            for col in range(COLS):
+                print(board[row][col], end=" ")
+            print()
+        return board
+
     def _create(self):
         for row in range(ROWS):
             for col in range(COLS):

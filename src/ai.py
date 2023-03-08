@@ -1,7 +1,10 @@
+from board import Board
+from const import *
 
 class Ai:
 
     def __init__(self):
+        self.board = Board()
         pass
 
     def minimax(self):
@@ -12,4 +15,26 @@ class Ai:
     def heuristic(self):
         # params: board, maximizing color
         # determine how good a position is for a slect player
-        pass
+
+        pieces = {
+            "pa": 1,
+            "ro": 5,
+            "kn": 3,
+            "bi": 3,
+            "qu": 9,
+            "ki": 1000,
+        }
+
+        white_eval = 0
+        black_eval = 0
+        board = self.board.see_board()
+        for row in range(ROWS):
+            for col in range(COLS):
+                if board[row][col][0] == "b":
+                    black_eval += pieces[board[row][col][1:3]]
+                elif board[row][col][0] == "w":
+                    white_eval += pieces[board[row][col][1:3]]
+                else:
+                    continue
+        
+        print(black_eval,white_eval)
