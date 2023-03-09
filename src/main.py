@@ -103,8 +103,6 @@ class Main:
                             elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
                                 self.starting = False
                                 self.ai_starting = True
-                        board.all_possible_moves(game.next_player)
-                        board.create_child_boards()
 
                 # click piece
                 else:
@@ -173,6 +171,9 @@ class Main:
                                 game.next_turn()
 
                         dragger.undrag_piece()
+                        board.all_possible_moves(game.next_player)
+                        board.create_child_boards()
+
                         # board.generate_moves_ai()
 
                     elif event.type == pygame.KEYDOWN:

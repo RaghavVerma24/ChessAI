@@ -31,6 +31,7 @@ class Board:
                         self.calc_moves(self.squares[row][col].piece, row, col)
                 except:
                     continue
+        print(self.possible_moves)
 
         # loop through all pieces and find possible moves for color
 
@@ -115,9 +116,9 @@ class Board:
                 # do try catch for all pieces
                 color_piece = self.squares[row][col].piece
                 temp_board.calc_moves(color_piece, row, col, bool=False)
-                if color_piece.all_moves():
-                    print(color_piece.name)
-                    print(row, col)
+                # if color_piece.all_moves():
+                #     print(color_piece.name)
+                #     print(row, col)
  
     def calc_moves(self, piece, row, col, bool=True):
 
