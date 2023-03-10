@@ -168,11 +168,12 @@ class Main:
                                 game.show_last_move(screen)
                                 game.show_pieces(screen)
                                 # next turn
-                                game.next_turn()
+                                game.next_turn(self.ai_starting)
 
                         dragger.undrag_piece()
-                        board.all_possible_moves(game.next_player)
-                        board.create_child_boards()
+                        if self.ai_starting:
+                            board.all_possible_moves(game.next_player)
+                            board.create_child_boards()
 
                         # board.generate_moves_ai()
 

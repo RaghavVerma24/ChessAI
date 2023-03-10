@@ -66,9 +66,10 @@ class Game:
             rect = (self.hovered_sqr.col * SQSIZE, self.hovered_sqr.row * SQSIZE, SQSIZE, SQSIZE)
             pygame.draw.rect(surface, color, rect, width=3)
 
-    def next_turn(self):
+    def next_turn(self, ai_starting):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
-        self.board.all_possible_moves(self.next_player)
+        if ai_starting:
+            self.board.all_possible_moves(self.next_player)
 
     def set_hover(self, row, col):
         self.hovered_sqr = self.board.squares[row][col]

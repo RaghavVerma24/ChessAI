@@ -103,7 +103,7 @@ class Board:
 
                             attacking_color = attacking_piece.color
                             # calc moves of all opposing color pieces (attacking color)
-                            self.checkmate(attacking_color)
+                            # self.checkmate(attacking_color)
 
                             return True
 
