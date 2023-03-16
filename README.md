@@ -1,12 +1,13 @@
 <br/>
-<p align="center">
-  <a href="https://github.com/RaghavVerma24/ChessAI">
-    <img src="https://static-00.iconduck.com/assets.00/chess-icon-512x512-1mnnsw7y.png" alt="Logo" width="80" height="80">
-  </a>
+<p>
+  <p float="left"
+    <h1>Chess AI</h1>
+    <a href="https://github.com/RaghavVerma24/ChessAI">
+      <img src="https://static-00.iconduck.com/assets.00/chess-icon-512x512-1mnnsw7y.png" alt="Logo" width="80" height="80">
+    </a>
+  </p>
 
-  <h3 align="center">Chess AI</h3>
-
-  <p align="center">
+  <p>
    This project is a chess game with AI implemented using Pygame. The game features different levels of AI difficulty, and allows for both single player and two player modes.
    
   </p>
