@@ -25,6 +25,21 @@ class Main:
         self.starting = True
         self.background = (49, 46, 43)
         self.ai_starting = False
+        self.gameover = False
+        self.winner = ""
+        self.winnerColor = ""
+
+    def end_game(self, screen, winner):
+        screen.fill(self.background)
+        self.text(screen, f"The Winner is {winner}", WIDTH // 2, (HEIGHT // 2) - 100, 32)
+
+        play_again = pygame.draw.rect(screen, (127, 166, 80), pygame.Rect(275, 365, 250, 70))
+
+        if play_again.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(screen, (149, 187, 74), pygame.Rect(275, 365, 250, 70))
+            self.gameover = False
+
+        self.text(screen, 'Play Again', WIDTH // 2, (HEIGHT // 2), 24)
 
     def starting_screen(self, screen):
         screen.fill(self.background)
@@ -70,125 +85,153 @@ class Main:
         db.get_plays()
 
         while True:
-            if self.starting:
-                self.starting_screen(screen)
-            elif not self.starting and self.ai_starting:
-                # ai.heuristic()
-                game.show_bg(screen)
-                game.show_last_move(screen)
-                game.show_moves(screen)
-                game.show_pieces(screen)
-                game.show_hover(screen)
-
-                if dragger.dragging:
-                    dragger.update_blit(screen)
-
+            if self.gameover:
+                self.end_game(screen, self.winnerColor)
+                self.winner = "True"
             else:
-                game.show_bg(screen)
-                game.show_last_move(screen)
-                game.show_moves(screen)
-                game.show_pieces(screen)
-                game.show_hover(screen)
+                if (self.winner != "True"):
+                    if self.starting:
+                        self.starting_screen(screen)
+                    elif not self.starting and self.ai_starting:
+                        # ai.heuristic()
+                        game.show_bg(screen)
+                        game.show_last_move(screen)
+                        game.show_moves(screen)
+                        game.show_pieces(screen)
+                        game.show_hover(screen)
 
-                if dragger.dragging:
-                    dragger.update_blit(screen)
+                        if dragger.dragging:
+                            dragger.update_blit(screen)
+                    else:
+                        game.show_bg(screen)
+                        game.show_last_move(screen)
+                        game.show_moves(screen)
+                        game.show_pieces(screen)
+                        game.show_hover(screen)
 
-            for event in pygame.event.get():
-                if self.starting:
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        mouse = pygame.mouse.get_pos()
-                        if self.starting:
-                            if 275 <= mouse[0] <= 525 and 365 <= mouse[1] <= 435:
-                                self.starting = False
-                            elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
-                                self.starting = False
-                                self.ai_starting = True
+                        if dragger.dragging:
+                            dragger.update_blit(screen)
 
-                # click piece
-                else:
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        dragger.update_mouse(event.pos)
+                for event in pygame.event.get():
+                    if self.starting or self.winner != "":
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mouse = pygame.mouse.get_pos()
+                            if self.starting or self.winner != "":
+                                if 275 <= mouse[0] <= 525 and 365 <= mouse[1] <= 435:
+                                    if (self.winner != ""):
+                                        game.reset()
+                                        game = self.game
+                                        board = self.game.board
+                                        dragger = self.game.dragger
+                                        self.gameover = False
+                                        self.winner = ""
+                                        self.starting = True
+                                    else:
+                                        self.starting = False
+                                elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
+                                    self.starting = False
+                                    self.ai_starting = True
 
-                        clicked_row = dragger.mouseY // SQSIZE
-                        clicked_col = dragger.mouseX // SQSIZE
+                    # click piece
+                    else:
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            dragger.update_mouse(event.pos)
 
-                        # Check if game square has a piece
-                        if board.squares[clicked_row][clicked_col].has_piece():
-                            piece = board.squares[clicked_row][clicked_col].piece
+                            clicked_row = dragger.mouseY // SQSIZE
+                            clicked_col = dragger.mouseX // SQSIZE
 
-                            # find next player turn
-                            if piece.color == game.next_player:
-                                board.calc_moves(
-                                    piece, clicked_row, clicked_col, bool=True)
-                                dragger.save_initial(event.pos)
-                                dragger.drag_piece(piece)
+                            # Check if game square has a piece
+                            if board.squares[clicked_row][clicked_col].has_piece():
+                                piece = board.squares[clicked_row][clicked_col].piece
 
+                                # find next player turn
+                                if piece.color == game.next_player:
+                                    board.calc_moves(
+                                        piece, clicked_row, clicked_col, bool=True)
+                                    dragger.save_initial(event.pos)
+                                    dragger.drag_piece(piece)
+
+                                    game.show_bg(screen)
+                                    game.show_last_move(screen)
+                                    game.show_moves(screen)
+                                    game.show_pieces(screen)
+
+                        # move piece
+                        elif event.type == pygame.MOUSEMOTION:
+                            motion_row = event.pos[1] // SQSIZE
+                            motion_col = event.pos[0] // SQSIZE
+
+                            game.set_hover(motion_row, motion_col)
+
+                            if dragger.dragging:
+                                dragger.update_mouse(event.pos)
                                 game.show_bg(screen)
                                 game.show_last_move(screen)
                                 game.show_moves(screen)
                                 game.show_pieces(screen)
+                                game.show_hover(screen)
+                                dragger.update_blit(screen)
 
-                    # move piece
-                    elif event.type == pygame.MOUSEMOTION:
-                        motion_row = event.pos[1] // SQSIZE
-                        motion_col = event.pos[0] // SQSIZE
+                        # release piece
+                        elif event.type == pygame.MOUSEBUTTONUP:
 
-                        game.set_hover(motion_row, motion_col)
+                            if dragger.dragging:
+                                dragger.update_mouse(event.pos)
 
-                        if dragger.dragging:
-                            dragger.update_mouse(event.pos)
-                            game.show_bg(screen)
-                            game.show_last_move(screen)
-                            game.show_moves(screen)
-                            game.show_pieces(screen)
-                            game.show_hover(screen)
-                            dragger.update_blit(screen)
+                                released_row = dragger.mouseY // SQSIZE
+                                released_col = dragger.mouseX // SQSIZE
 
-                    # release piece
-                    elif event.type == pygame.MOUSEBUTTONUP:
+                                # create possible move
+                                initial = Square(
+                                    dragger.initial_row, dragger.initial_col)
+                                final = Square(released_row, released_col)
+                                move = Move(initial, final)
 
-                        if dragger.dragging:
-                            dragger.update_mouse(event.pos)
+                                # check valid move
+                                if board.valid_move(dragger.piece, move):
+                                    board.move(dragger.piece, move)
+                                    ai.heuristic(board.see_board())
+                                    # draw piece on board
+                                    game.show_bg(screen)
+                                    game.show_last_move(screen)
+                                    game.show_pieces(screen)
+                                    # next turn
+                                    board.addMove(piece.name, released_col, released_row)
+                                    if (board.checkmate()):
+                                        if (piece.color == "white"):
+                                            self.winnerColor = "White"
+                                        else:
+                                            self.winnerColor = "Black"
+                                        self.winner = "True"
+                                        self.gameover = True          
+                                    game.next_turn(self.ai_starting)
+                                
+                                
+                            
+                            dragger.undrag_piece()
 
-                            released_row = dragger.mouseY // SQSIZE
-                            released_col = dragger.mouseX // SQSIZE
+                            if self.ai_starting:
+                                board.all_possible_moves(game.next_player)
+                                board.create_child_boards()
 
-                            # create possible move
-                            initial = Square(
-                                dragger.initial_row, dragger.initial_col)
-                            final = Square(released_row, released_col)
-                            move = Move(initial, final)
+                            # board.generate_moves_ai()
 
-                            # check valid move
-                            if board.valid_move(dragger.piece, move):
-                                board.move(dragger.piece, move)
-                                ai.heuristic(board.see_board())
-                                # draw piece on board
-                                game.show_bg(screen)
-                                game.show_last_move(screen)
-                                game.show_pieces(screen)
-                                # next turn
-                                game.next_turn(self.ai_starting)
-
-                        dragger.undrag_piece()
-                        if self.ai_starting:
-                            board.all_possible_moves(game.next_player)
-                            board.create_child_boards()
-
-                        # board.generate_moves_ai()
-
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_r:
-                            game.reset()
-                            game = self.game
-                            board = self.game.board
-                            dragger = self.game.dragger
-                        if event.key == pygame.K_q:
-                            self.starting = True
-                            game.reset()
-                            game = self.game
-                            board = self.game.board
-                            dragger = self.game.dragger
+                        elif event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_r:
+                                game.reset()
+                                game = self.game
+                                board = self.game.board
+                                dragger = self.game.dragger
+                                self.gameover = False
+                                self.winner = ""
+                            if event.key == pygame.K_q:
+                                self.starting = True
+                                game.reset()
+                                game = self.game
+                                board = self.game.board
+                                dragger = self.game.dragger
+                                self.gameover = False
+                                self.winner = ""
 
                 # quit app
                 if (event.type == pygame.QUIT):

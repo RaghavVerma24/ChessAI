@@ -3,6 +3,7 @@ from square import Square
 from piece import *
 from move import Move
 import copy
+import chess
 
 class Board:
 
@@ -10,12 +11,14 @@ class Board:
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
         self.children = []
+        self.chessBoard = chess.Board()
         self.possible_moves = []
         self.parent = None
         self.board = [["" for i in range(ROWS)] for j in range(COLS)]
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
+        self.boardCol = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
     def add_children(self, child):
         # Add all boards that have move possiblities
@@ -109,16 +112,20 @@ class Board:
 
         return False
 
-    def checkmate(self, color):
-        temp_board = copy.deepcopy(self)
-        for row in range(ROWS):
-            for col in range(COLS):
-                # do try catch for all pieces
-                color_piece = self.squares[row][col].piece
-                temp_board.calc_moves(color_piece, row, col, bool=False)
-                # if color_piece.all_moves():
-                #     print(color_piece.name)
-                #     print(row, col)
+    def checkmate(self):
+        print(self.chessBoard.is_checkmate())
+        return self.chessBoard.is_checkmate()
+
+    def addMove(self, piece, col, row):
+        print(self.chessBoard.legal_moves)
+        row = ROWS - row
+        col = self.boardCol[col]
+        if (piece == "pawn"):
+            self.chessBoard.push_san(f"{col}{row}")
+        else:
+            letter = "N" if piece == "knight" else piece[0].upper()
+            self.chessBoard.push_san(f"{letter}{col}{row}")
+        print(self.chessBoard)
  
     def calc_moves(self, piece, row, col, bool=True):
 
