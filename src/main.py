@@ -45,10 +45,6 @@ class Main:
         screen.fill(self.background)
         self.text(screen, 'Play Chess Online or with AI', WIDTH // 2, (HEIGHT // 2) - 100, 32)
 
-        # self.button(screen, 250, 70, "Play with Player", (127, 166,
-        #             80), (149, 187, 74), btn_seperator=0)
-        # self.button(screen, 250, 70, "Play with AI",
-        #             (56, 54, 52), (74, 72, 70))
         human = pygame.draw.rect(screen, (127, 166, 80), pygame.Rect(275, 365, 250, 70))
 
         ai = pygame.draw.rect(screen, (56, 54, 52), pygame.Rect(275, 455, 250, 70))
@@ -211,7 +207,6 @@ class Main:
                             dragger.undrag_piece()
 
                             if self.ai_starting:
-                                board.all_possible_moves(game.next_player)
                                 board.create_child_boards()
 
                             # board.generate_moves_ai()

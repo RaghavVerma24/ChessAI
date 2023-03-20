@@ -25,27 +25,16 @@ class Board:
         child.parent = self
         self.children.append(child)
 
-    def all_possible_moves(self, color):
-        self.possible_moves = []
-        for row in range(ROWS):
-            for col in range(COLS):
-                try:
-                    if self.squares[row][col].piece.color == color:
-                        self.calc_moves(self.squares[row][col].piece, row, col)
-                except:
-                    continue
-        print(self.possible_moves)
+    def all_possible_moves(self):
+        return list(self.chessBoard.legal_moves)
 
         # loop through all pieces and find possible moves for color
 
     def create_child_boards(self):
-        for i in range(len(self.possible_moves)):
+        moves = self.all_possible_moves()
+        for i in range(len(moves)):
             temp_board = copy.deepcopy(self)
-            move = self.possible_moves[i][0]
-            row = self.possible_moves[i][1]
-            col = self.possible_moves[i][2]
-
-            piece = self.squares[row][col].piece
+            print(moves[i])
             # self.move(piece, move)
         # call add_children when boards are made
         # takes possible moves and creates an array of boards that represent child boards

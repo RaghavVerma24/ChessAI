@@ -13,6 +13,22 @@ class Game:
         self.hovered_sqr = None
         self.board = Board()
         self.dragger = Dragger()
+        self.boardCol = ["a", "b", "c", "d", "e", "f", "g", "h"]
+
+    def show_position(self, surface):
+        for row in range(ROWS):
+            self.text(surface, str(ROWS-row), 10, 15 + row*SQSIZE, 18, (234, 235, 200) if row % 2 else (119, 154, 88))
+        for col in range(COLS):
+            self.text(surface, self.boardCol[col], SQSIZE - 15 + col*SQSIZE, SQSIZE - 15 + 7*SQSIZE, 20, (119, 154, 88) if col % 2 else (234, 235, 200))
+
+    def text(self, screen, img_text, x, y, size, color):
+        font = pygame.font.Font('freesansbold.ttf', size)
+        text = font.render(img_text,
+                           True, color)
+        textRect = text.get_rect()
+        textRect.center = (x, y)
+
+        screen.blit(text, textRect)
 
     def show_bg(self, surface):
         for row in range(ROWS):
@@ -25,6 +41,8 @@ class Game:
                 rect = (col * SQSIZE, row * SQSIZE, SQSIZE, SQSIZE)
 
                 pygame.draw.rect(surface, color, rect)
+        self.show_position(surface)
+        
 
     def show_pieces(self, surface):
         for row in range(ROWS):
@@ -69,7 +87,7 @@ class Game:
     def next_turn(self, ai_starting):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
         if ai_starting:
-            self.board.all_possible_moves(self.next_player)
+            self.board.all_possible_moves()
 
     def set_hover(self, row, col):
         self.hovered_sqr = self.board.squares[row][col]
