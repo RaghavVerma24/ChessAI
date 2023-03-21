@@ -29,6 +29,7 @@ class Board:
         return list(self.chessBoard.legal_moves)
 
     def create_child_boards(self):
+        boards = []
         moves = self.all_possible_moves()
         for i in range(len(moves)): 
             
@@ -45,8 +46,9 @@ class Board:
             letter = str(piece).upper() 
             letter = letter if letter != "P" else ""
             self.tempBoard.push_san(f"{letter}{finalPos}")
-            # self.tempBoard.push_san(f"{self.boardCol[i]}{3}")
-            print(self.tempBoard)
+            boards.append(self.tempBoard)
+   
+            self.add_children(self.tempBoard)        
 
             # self.move(piece, move)
         # call add_children when boards are made

@@ -112,6 +112,7 @@ class Main:
                 for event in pygame.event.get():
                     if self.ai_starting and self.ai_move:
                             board.create_child_boards()
+                            # ai.minimax(board.children, board, 3, True) 
                             self.ai_move = False
                     if self.starting or self.winner != "":
                         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -190,7 +191,6 @@ class Main:
                                 # check valid move
                                 if board.valid_move(dragger.piece, move):
                                     board.move(dragger.piece, move)
-                                    ai.heuristic(board.see_board())
                                     # draw piece on board
                                     game.show_bg(screen)
                                     game.show_last_move(screen)
