@@ -86,8 +86,7 @@ class Game:
 
     def next_turn(self, ai_starting):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
-        if ai_starting:
-            self.board.all_possible_moves()
+        
 
     def set_hover(self, row, col):
         self.hovered_sqr = self.board.squares[row][col]

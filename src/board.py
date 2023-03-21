@@ -28,18 +28,30 @@ class Board:
     def all_possible_moves(self):
         return list(self.chessBoard.legal_moves)
 
-        # loop through all pieces and find possible moves for color
-
     def create_child_boards(self):
         moves = self.all_possible_moves()
-        for i in range(len(moves)):
-            temp_board = copy.deepcopy(self)
+        for i in range(len(moves)): 
+            
+            # temp_board = copy.deepcopy(self)
+            # initial = Square(int(moves[i][1]), self.boardCol.index(moves[i][0]))
+            # final = Square(int(moves[i][3]), self.boardCol.index(moves[i][2]))
+            # move = Move(initial, final)
+            # temp_board.move()
+
             print(moves[i])
+            self.tempBoard = chess.Board()
+            piece = self.tempBoard.piece_at(chess.parse_square(str(moves[i])[:2]))
+            finalPos = str(moves[i])[2:]
+            letter = str(piece).upper() 
+            letter = letter if letter != "P" else ""
+            self.tempBoard.push_san(f"{letter}{finalPos}")
+            # self.tempBoard.push_san(f"{self.boardCol[i]}{3}")
+            print(self.tempBoard)
+
             # self.move(piece, move)
         # call add_children when boards are made
         # takes possible moves and creates an array of boards that represent child boards
         # self.add_children(child)
-        pass
 
     def move(self, piece, move, testing = False):
         initial = move.initial

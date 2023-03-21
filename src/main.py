@@ -28,6 +28,7 @@ class Main:
         self.gameover = False
         self.winner = ""
         self.winnerColor = ""
+        self.ai_move = True
 
     def end_game(self, screen, winner):
         screen.fill(self.background)
@@ -109,6 +110,9 @@ class Main:
                             dragger.update_blit(screen)
 
                 for event in pygame.event.get():
+                    if self.ai_starting and self.ai_move:
+                            board.create_child_boards()
+                            self.ai_move = False
                     if self.starting or self.winner != "":
                         if event.type == pygame.MOUSEBUTTONDOWN:
                             mouse = pygame.mouse.get_pos()
@@ -201,13 +205,9 @@ class Main:
                                         self.winner = "True"
                                         self.gameover = True          
                                     game.next_turn(self.ai_starting)
+                                    self.ai_move = True
                                 
-                                
-                            
                             dragger.undrag_piece()
-
-                            if self.ai_starting:
-                                board.create_child_boards()
 
                             # board.generate_moves_ai()
 

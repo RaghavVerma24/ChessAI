@@ -1,5 +1,6 @@
 from board import Board
 from const import *
+import sys
 
 class Ai:
 
@@ -12,10 +13,23 @@ class Ai:
         # For each board loop through the child boards and get a herustic evalution (get number of points on board) and alternative between min and max until you reach the current tree node for the board
         pass
 
-    def heuristic(self, board):
+    def heuristic(self, board, depth=3, maximizingPlayer="white"):
+        if depth == 0:
+            return self.evaluate_board(board)
+        
+        if maximizingPlayer:
+            maxEval = - sys.maxsize - 1
+            # for each child in board
+            #
+        
+        else:
+            minEval = sys.maxsize
         # params: board, maximizing color
         # determine how good a position is for a slect player
+        pass
 
+
+    def evaluate_board(self, board):
         pieces = {
             "pa": 1,
             "ro": 5,
@@ -36,4 +50,4 @@ class Ai:
                 else:
                     continue
         
-        print(black_eval,white_eval)
+        return white_eval-black_eval
