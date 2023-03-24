@@ -11,6 +11,7 @@
 
 https://user-images.githubusercontent.com/59304737/227419997-ca29e6de-4dcf-434c-a0a5-64d7186626b7.mp4
 
+<br>
 
 <p float="left" align="center">
   <img src="https://github.com/RaghavVerma24/ChessAI/blob/main/assets/readme_imgs/game.png?raw=true" alt="Game Screenshot"  width="400" height="400" />
