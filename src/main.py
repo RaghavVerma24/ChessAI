@@ -110,6 +110,7 @@ class Main:
                             dragger.update_blit(screen)
 
                 for event in pygame.event.get():
+                    print(self.ai_starting, self.ai_move)
                     if self.ai_starting and self.ai_move:
                             board.create_child_boards()
                             # ai.minimax(board.children, board, 3, True) 
@@ -196,7 +197,7 @@ class Main:
                                     game.show_last_move(screen)
                                     game.show_pieces(screen)
                                     # next turn
-                                    board.addMove(piece.name, released_col, released_row)
+                                    board.addMove(piece.name, released_col, released_row, self.ai_starting)
                                     if (board.checkmate()):
                                         if (piece.color == "white"):
                                             self.winnerColor = "White"

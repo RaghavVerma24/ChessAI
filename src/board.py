@@ -119,16 +119,17 @@ class Board:
         print(self.chessBoard.is_checkmate())
         return self.chessBoard.is_checkmate()
 
-    def addMove(self, piece, col, row):
-        print(self.chessBoard.legal_moves)
-        row = ROWS - row
-        col = self.boardCol[col]
-        if (piece == "pawn"):
-            self.chessBoard.push_san(f"{col}{row}")
-        else:
-            letter = "N" if piece == "knight" else piece[0].upper()
-            self.chessBoard.push_san(f"{letter}{col}{row}")
-        print(self.chessBoard)
+    def addMove(self, piece, col, row, ai):
+        if (ai):
+            print(self.chessBoard.legal_moves)
+            row = ROWS - row
+            col = self.boardCol[col]
+            if (piece == "pawn"):
+                self.chessBoard.push_san(f"{col}{row}")
+            else:
+                letter = "N" if piece == "knight" else piece[0].upper()
+                self.chessBoard.push_san(f"{letter}{col}{row}")
+            print(self.chessBoard)
  
     def calc_moves(self, piece, row, col, bool=True):
 

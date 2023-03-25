@@ -15,7 +15,7 @@ class Piece:
 
     def set_sprite(self, size=80):
         self.sprite = os.path.join(
-            f'assets/images/imgs-{size}px/{self.color}_{self.name}.png'
+            f'../assets/images/imgs-{size}px/{self.color}_{self.name}.png'
         )
 
     def add_move(self, move):
