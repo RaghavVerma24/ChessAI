@@ -37,6 +37,7 @@ pip install pygame
 
 3. Run the game:
 ```
+cd src
 python main.py
 ```
 
@@ -64,4 +65,4 @@ There are three levels of difficulty:
 
 ### Customization
 
-You can customize the AI by changing the `max_depth` parameter in `ai.py`. A higher `max_depth` value will result in a stronger AI, but will also increase the processing time required for each move.
+You can customize the AI by changing the `depth` parameter in `ai.py`. A higher `depth` value will result in a stronger AI, but will also increase the processing time required for each move.
