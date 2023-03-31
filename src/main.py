@@ -110,7 +110,6 @@ class Main:
                             dragger.update_blit(screen)
 
                 for event in pygame.event.get():
-                    print(self.ai_starting, self.ai_move)
                     if self.ai_starting and self.ai_move:
                             board.create_child_boards()
                             # ai.minimax(board.children, board, 3, True) 
@@ -139,40 +138,49 @@ class Main:
                         if event.type == pygame.MOUSEBUTTONDOWN:
                             dragger.update_mouse(event.pos)
 
-                            clicked_row = dragger.mouseY // SQSIZE
-                            clicked_col = dragger.mouseX // SQSIZE
+                            clicked_row = (dragger.mouseY - GAP) // SQSIZE
+                            clicked_col = (dragger.mouseX - GAP) // SQSIZE
 
                             # Check if game square has a piece
-                            if board.squares[clicked_row][clicked_col].has_piece():
-                                piece = board.squares[clicked_row][clicked_col].piece
+                            try:
+                                if board.squares[clicked_row][clicked_col].has_piece():
+                                    piece = board.squares[clicked_row][clicked_col].piece
 
-                                # find next player turn
-                                if piece.color == game.next_player:
-                                    board.calc_moves(
-                                        piece, clicked_row, clicked_col, bool=True)
-                                    dragger.save_initial(event.pos)
-                                    dragger.drag_piece(piece)
+                                    # find next player turn
+                                    try:
+                                        if piece.color == game.next_player:
+                                            board.calc_moves(
+                                                piece, clicked_row, clicked_col, bool=True)
+                                            dragger.save_initial(event.pos)
+                                            dragger.drag_piece(piece)
 
-                                    game.show_bg(screen)
-                                    game.show_last_move(screen)
-                                    game.show_moves(screen)
-                                    game.show_pieces(screen)
+                                            game.show_bg(screen)
+                                            game.show_last_move(screen)
+                                            game.show_moves(screen)
+                                            game.show_pieces(screen)
+                                    except:
+                                        pass
+                            except:
+                                pass
 
                         # move piece
                         elif event.type == pygame.MOUSEMOTION:
-                            motion_row = event.pos[1] // SQSIZE
-                            motion_col = event.pos[0] // SQSIZE
+                            motion_row = (event.pos[1] - GAP) // SQSIZE
+                            motion_col = (event.pos[0] - GAP) // SQSIZE
 
                             game.set_hover(motion_row, motion_col)
 
                             if dragger.dragging:
-                                dragger.update_mouse(event.pos)
-                                game.show_bg(screen)
-                                game.show_last_move(screen)
-                                game.show_moves(screen)
-                                game.show_pieces(screen)
-                                game.show_hover(screen)
-                                dragger.update_blit(screen)
+                                if((event.pos[0] >= GAP + 35) and (event.pos[0] <= WIDTH - GAP - 35)):
+                                    if((event.pos[1] >= GAP + 35) and (event.pos[1] <= HEIGHT - GAP - 35)):
+                                        dragger.update_mouse(event.pos)
+                                        game.show_bg(screen)
+                                        game.show_last_move(screen)
+                                        game.show_moves(screen)
+                                        game.show_pieces(screen)
+                                        game.show_hover(screen)
+                                        dragger.update_blit(screen)
+
 
                         # release piece
                         elif event.type == pygame.MOUSEBUTTONUP:
@@ -180,8 +188,8 @@ class Main:
                             if dragger.dragging:
                                 dragger.update_mouse(event.pos)
 
-                                released_row = dragger.mouseY // SQSIZE
-                                released_col = dragger.mouseX // SQSIZE
+                                released_row = (dragger.mouseY - GAP) // SQSIZE
+                                released_col = (dragger.mouseX - GAP) // SQSIZE
 
                                 # create possible move
                                 initial = Square(
