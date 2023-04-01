@@ -120,7 +120,6 @@ class Board:
         return self.chessBoard.is_checkmate()
 
     def addMove(self, piece, col, row, ai):
-        if (ai):
             print(self.chessBoard.legal_moves)
             row = ROWS - row
             col = self.boardCol[col]

@@ -31,6 +31,8 @@ class Main:
         self.ai_move = True
 
     def end_game(self, screen, winner):
+        pygame.time.delay(500)
+        
         screen.fill(self.background)
         self.text(screen, f"The Winner is {winner}", WIDTH // 2, (HEIGHT // 2) - 100, 32)
 
@@ -130,6 +132,8 @@ class Main:
                                         self.starting = True
                                     else:
                                         self.starting = False
+                                        pygame.time.delay(500)
+
                                 elif 275 <= mouse[0] <= 525 and 455 <= mouse[1] <= 525:
                                     self.starting = False
                                     self.ai_starting = True
