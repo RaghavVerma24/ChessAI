@@ -14,13 +14,17 @@ class Game:
         self.board = Board()
         self.dragger = Dragger()
         self.boardCol = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        self.base_timer = 600
+        self.time = [pygame.time.get_ticks(), pygame.time.get_ticks()]
+        self.times = [self.base_timer,self.base_timer]
+        self.elapsed_time = [0,0]
 
 
     def show_position(self, surface):
         for row in range(ROWS):
             self.text(surface, str(ROWS-row), GAP + 10, GAP + 15 + row*SQSIZE, 16, (234, 235, 200) if row % 2 else (119, 154, 88))
         for col in range(COLS):
-            self.text(surface, self.boardCol[col], GAP + (SQSIZE - 15 + col*SQSIZE), GAP + SQSIZE - 15 + 7*SQSIZE, 18, (119, 154, 88) if col % 2 else (234, 235, 200))
+            self.text(surface, self.boardCol[col], GAP + (SQSIZE - 10 + col*SQSIZE), GAP + SQSIZE - 10 + 7*SQSIZE, 16, (119, 154, 88) if col % 2 else (234, 235, 200))
 
     def text(self, screen, img_text, x, y, size, color):
         font = pygame.font.Font('freesansbold.ttf', size)
@@ -85,12 +89,30 @@ class Game:
             rect = (GAP + (self.hovered_sqr.col * SQSIZE), GAP + (self.hovered_sqr.row * SQSIZE), SQSIZE, SQSIZE)
             pygame.draw.rect(surface, color, rect, width=3)
 
-    def show_timer(self, surface, timer):
-        base_timer = 600
-        white_timer = base_timer - int((pygame.time.get_ticks() - timer[0])/1000)
-        black_timer = base_timer - int((pygame.time.get_ticks() - timer[1])/1000)
-        self.text(surface, f"{white_timer//60}:{white_timer%60}", WIDTH - 80, GAP/2, 20, "#ffffff")
-        self.text(surface, f"{black_timer//60}:{black_timer%60}", 80, HEIGHT - GAP/2, 20, "#ffffff")
+    def show_timer(self, surface):
+        surface.fill((0,0,0))
+        if (self.next_player == "black"):
+            self.elapsed_time[1] = pygame.time.get_ticks()//1000 - self.elapsed_time[0]
+            black_timer = self.base_timer - self.elapsed_time[1]
+            white_timer = self.times[0]
+            if (black_timer >= 0 and white_timer >= 0):
+                white_mins, black_mins = f"0{white_timer//60}" if white_timer//60 < 10 else white_timer//60, f"0{black_timer//60}" if black_timer//60 < 10 else black_timer//60
+                white_seconds, black_seconds = f"0{white_timer%60}" if white_timer%60 < 10 else white_timer%60, f"0{black_timer%60}" if black_timer%60 < 10 else black_timer%60
+                self.text(surface, f"{white_mins}:{white_seconds}", 80, HEIGHT - GAP/2, 20, "#ffffff")
+                self.text(surface, f"{black_mins}:{black_seconds}", WIDTH - 80, GAP/2, 20, "#ffffff")
+                self.times[1] = black_timer
+
+        else:
+            self.elapsed_time[0] = pygame.time.get_ticks()//1000 - self.elapsed_time[1]
+            white_timer = self.base_timer - self.elapsed_time[0]
+            black_timer = self.times[1]
+            if (black_timer >= 0 and white_timer >= 0):
+                white_mins, black_mins = f"0{white_timer//60}" if white_timer//60 < 10 else white_timer//60, f"0{black_timer//60}" if black_timer//60 < 10 else black_timer//60
+                white_seconds, black_seconds = f"0{white_timer%60}" if white_timer%60 < 10 else white_timer%60, f"0{black_timer%60}" if black_timer%60 < 10 else black_timer%60
+                self.text(surface, f"{black_mins}:{black_seconds}", WIDTH - 80, GAP/2, 20, "#ffffff")
+                self.text(surface, f"{white_mins}:{white_seconds}", 80, HEIGHT - GAP/2, 20, "#ffffff")
+                self.times[0] = white_timer
+        
 
     def next_turn(self, ai_starting):
         self.next_player = 'white' if self.next_player == 'black' else 'black'

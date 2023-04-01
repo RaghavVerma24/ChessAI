@@ -29,7 +29,6 @@ class Main:
         self.winner = ""
         self.winnerColor = ""
         self.ai_move = True
-        self.time = (pygame.time.get_ticks(), pygame.time.get_ticks())
 
     def end_game(self, screen, winner):
         screen.fill(self.background)
@@ -101,7 +100,7 @@ class Main:
                         if dragger.dragging:
                             dragger.update_blit(screen)
                     else:
-                        game.show_timer(screen, self.time)
+                        game.show_timer(screen)
                         game.show_bg(screen)
                         game.show_last_move(screen)
                         game.show_moves(screen)
@@ -234,6 +233,7 @@ class Main:
                                 dragger = self.game.dragger
                                 self.gameover = False
                                 self.winner = ""
+
                             if event.key == pygame.K_q:
                                 self.starting = True
                                 game.reset()
