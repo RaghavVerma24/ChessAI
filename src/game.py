@@ -15,6 +15,7 @@ class Game:
         self.dragger = Dragger()
         self.boardCol = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
+
     def show_position(self, surface):
         for row in range(ROWS):
             self.text(surface, str(ROWS-row), GAP + 10, GAP + 15 + row*SQSIZE, 16, (234, 235, 200) if row % 2 else (119, 154, 88))
@@ -84,8 +85,12 @@ class Game:
             rect = (GAP + (self.hovered_sqr.col * SQSIZE), GAP + (self.hovered_sqr.row * SQSIZE), SQSIZE, SQSIZE)
             pygame.draw.rect(surface, color, rect, width=3)
 
-    def show_timer(self, surface):
-        
+    def show_timer(self, surface, timer):
+        base_timer = 600
+        white_timer = base_timer - int((pygame.time.get_ticks() - timer[0])/1000)
+        black_timer = base_timer - int((pygame.time.get_ticks() - timer[1])/1000)
+        self.text(surface, f"{white_timer//60}:{white_timer%60}", WIDTH - 80, GAP/2, 20, "#ffffff")
+        self.text(surface, f"{black_timer//60}:{black_timer%60}", 80, HEIGHT - GAP/2, 20, "#ffffff")
 
     def next_turn(self, ai_starting):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
