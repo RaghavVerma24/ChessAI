@@ -39,7 +39,6 @@ class Board:
             # move = Move(initial, final)
             # temp_board.move()
 
-            print(moves[i])
             self.tempBoard = chess.Board()
             piece = self.tempBoard.piece_at(chess.parse_square(str(moves[i])[:2]))
             finalPos = str(moves[i])[2:]
@@ -417,6 +416,9 @@ class Board:
         print()
         
         return self.board
+
+    def __len__(self):
+        return len(self.children)
 
     def _create(self):
         for row in range(ROWS):

@@ -9,30 +9,27 @@ class Ai:
         pass
 
     def minimax(self, children, board, depth, maximizingPlayer):
+        children = list(children)
         
         if depth == 0:
             return self.heuristic(board)
         
         if maximizingPlayer:
             maxEval = - sys.maxsize - 1
-            for child in children:
-                eval = self.minimax(child, board, depth - 1, False)
+            for i in range(len(children)):
+                eval = self.minimax(children[i], board, depth - 1, False)
                 maxEval = max(maxEval, eval)
             return maxEval
         
         else:
             minEval = sys.maxsize
-            for child in children:
-                eval = self.minimax(child, board, depth - 1, True)
+            for i in range(len(children)):
+                eval = self.minimax(children[i], board, depth - 1, True)
                 minEval = min(minEval, eval)
             return minEval
 
         # params: board, maximizing color
-        # determine how good a position is for a slect player
-        pass
-        # params: board (includes child elements), alpha, beta, depth = 3, player (white or black)
-        # For each board loop through the child boards and get a herustic evalution (get number of points on board) and alternative between min and max until you reach the current tree node for the board
-        pass
+        # determine how good a position is for a slect player=
 
     def heuristic(self, board):
         pieces = {
