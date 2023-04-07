@@ -227,7 +227,7 @@ class Main:
                                             game.next_turn(self.ai_starting)
                                             self.ai_move = True
                                         
-                                    dragger.undrag_piece()
+                                        dragger.undrag_piece()
 
                                     # board.generate_moves_ai()
 
