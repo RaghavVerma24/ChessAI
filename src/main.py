@@ -29,6 +29,7 @@ class Main:
         self.winner = ""
         self.winnerColor = ""
         self.ai_move = True
+        self.start_time = 0
 
     def end_game(self, screen, winner):
         pygame.time.delay(500)
@@ -90,6 +91,7 @@ class Main:
             else:
                 if (self.winner != "True"):
                     if self.starting:
+                        self.start_time = pygame.time.get_ticks()//1000
                         self.starting_screen(screen)
                     elif not self.starting and self.ai_starting:
                         # ai.heuristic()
@@ -102,7 +104,7 @@ class Main:
                         if dragger.dragging:
                             dragger.update_blit(screen)
                     else:
-                        game.show_timer(screen)
+                        game.show_timer(screen, self.start_time)
                         game.show_bg(screen)
                         game.show_last_move(screen)
                         game.show_moves(screen)

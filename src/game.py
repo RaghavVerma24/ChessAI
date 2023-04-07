@@ -15,10 +15,8 @@ class Game:
         self.dragger = Dragger()
         self.boardCol = ["a", "b", "c", "d", "e", "f", "g", "h"]
         self.base_timer = 600
-        self.time = [pygame.time.get_ticks(), pygame.time.get_ticks()]
         self.times = [self.base_timer,self.base_timer]
         self.elapsed_time = [0,0]
-
 
     def show_position(self, surface):
         for row in range(ROWS):
@@ -89,12 +87,12 @@ class Game:
             rect = (GAP + (self.hovered_sqr.col * SQSIZE), GAP + (self.hovered_sqr.row * SQSIZE), SQSIZE, SQSIZE)
             pygame.draw.rect(surface, color, rect, width=3)
 
-    def show_timer(self, surface):
+    def show_timer(self, surface, extra):
         surface.fill((0,0,0))
         if (self.next_player == "black"):
             self.elapsed_time[1] = pygame.time.get_ticks()//1000 - self.elapsed_time[0]
-            black_timer = self.base_timer - self.elapsed_time[1]
-            white_timer = self.times[0]
+            black_timer = self.base_timer - self.elapsed_time[1] + extra
+            white_timer = self.times[0 ]
             if (black_timer >= 0 and white_timer >= 0):
                 white_mins, black_mins = f"0{white_timer//60}" if white_timer//60 < 10 else white_timer//60, f"0{black_timer//60}" if black_timer//60 < 10 else black_timer//60
                 white_seconds, black_seconds = f"0{white_timer%60}" if white_timer%60 < 10 else white_timer%60, f"0{black_timer%60}" if black_timer%60 < 10 else black_timer%60
@@ -104,7 +102,7 @@ class Game:
 
         else:
             self.elapsed_time[0] = pygame.time.get_ticks()//1000 - self.elapsed_time[1]
-            white_timer = self.base_timer - self.elapsed_time[0]
+            white_timer = self.base_timer - self.elapsed_time[0] + extra
             black_timer = self.times[1]
             if (black_timer >= 0 and white_timer >= 0):
                 white_mins, black_mins = f"0{white_timer//60}" if white_timer//60 < 10 else white_timer//60, f"0{black_timer//60}" if black_timer//60 < 10 else black_timer//60
