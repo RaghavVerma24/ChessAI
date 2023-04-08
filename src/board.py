@@ -11,7 +11,6 @@ class Board:
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
         self.last_move = None
         self.children = []
-        self.chessBoard = chess.Board()
         self.possible_moves = []
         self.parent = None
         self.board = [["" for i in range(ROWS)] for j in range(COLS)]
@@ -19,32 +18,49 @@ class Board:
         self._add_pieces('white')
         self._add_pieces('black')
         self.boardCol = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        self.names = {
+            "pawn" : "",
+            "knight" : "N",
+            "bishop" : "B",
+            "queen" : "Q",
+            "king" : "K",
+            "rook" : "R",
+        }
+        self.moves = []
 
     def add_children(self, child):
         # Add all boards that have move possiblities
         child.parent = self
         self.children.append(child)
 
-    def all_possible_moves(self):
-        return list(self.chessBoard.legal_moves)
+    def all_possible_moves(self, chessBoard):
+        return list(chessBoard.legal_moves)
 
-    def create_child_boards(self):
+    def push_child_moves(self, moved, board):
+        if (moved):
+            row = ROWS - self.last_move.final.row
+            col = self.boardCol[self.last_move.final.col]
+            letter = self.squares[self.last_move.final.row][self.last_move.final.col].piece.name
+            move = f"{self.names[letter]}{col}{row}"
+            self.moves.append(move)  
+
+        for move in self.moves:
+            board.push_san(move)
+            print(board)
+
+    def create_child_boards(self, chessBoard, moved):
         boards = []
-        moves = self.all_possible_moves()
+        moves = self.all_possible_moves(chessBoard)
+        
         for i in range(len(moves)): 
-            
-            # temp_board = copy.deepcopy(self)
-            # initial = Square(int(moves[i][1]), self.boardCol.index(moves[i][0]))
-            # final = Square(int(moves[i][3]), self.boardCol.index(moves[i][2]))
-            # move = Move(initial, final)
-            # temp_board.move()
 
             self.tempBoard = chess.Board()
             piece = self.tempBoard.piece_at(chess.parse_square(str(moves[i])[:2]))
             finalPos = str(moves[i])[2:]
             letter = str(piece).upper() 
             letter = letter if letter != "P" else ""
-            self.tempBoard.push_san(f"{letter}{finalPos}")
+            # self.tempBoard.push_san(f"{letter}{finalPos}")
+            # print(self.tempBoard)
             boards.append(self.tempBoard)
    
             self.add_children(self.tempBoard)        
@@ -91,6 +107,30 @@ class Board:
     def castling(self, initial, final):
         return abs(initial.col - final.col) == 2
 
+    def heuristic(self):
+        pieces = {
+            "pawn": 1,
+            "rook": 5,
+            "knight": 3,
+            "bishop": 3,
+            "queen": 9,
+            "king": 1000,
+        }
+
+        white_eval = 0
+        black_eval = 0
+        for row in range(ROWS):
+            for col in range(COLS):
+                try:
+                    if self.squares[row][col].piece.color == "black":
+                        black_eval += pieces[self.squares[row][col].piece.name]
+                    elif self.squares[row][col].piece.color == "white":
+                        white_eval += pieces[self.squares[row][col].piece.name]
+                except:
+                    continue
+
+        print(white_eval, black_eval)
+
     def in_check(self, piece, move):
 
         temp_piece = copy.deepcopy(piece)
@@ -114,20 +154,20 @@ class Board:
 
         return False
 
-    def checkmate(self):
-        print(self.chessBoard.is_checkmate())
-        return self.chessBoard.is_checkmate()
+    def checkmate(self, chessBoard):
+        return chessBoard.is_checkmate()
+    
+    def addMove(self, piece, col, row, ai, chessBoard):
+        row = ROWS - row
+        col = self.boardCol[col]
+        if (piece.name == "pawn"):
+            chessBoard.push_san(f"{col}{row}")
+        else:
+            letter = "N" if piece.name == "knight" else piece.name[0].upper()
+            chessBoard.push_san(f"{letter}{col}{row}")
+        print(self.see_board())
 
-    def addMove(self, piece, col, row, ai):
-            print(self.chessBoard.legal_moves)
-            row = ROWS - row
-            col = self.boardCol[col]
-            if (piece == "pawn"):
-                self.chessBoard.push_san(f"{col}{row}")
-            else:
-                letter = "N" if piece == "knight" else piece[0].upper()
-                self.chessBoard.push_san(f"{letter}{col}{row}")
-            print(self.chessBoard)
+        self.create_child_boards(chessBoard, True)
  
     def calc_moves(self, piece, row, col, bool=True):
 
@@ -405,9 +445,15 @@ class Board:
                 try:
                     name = self.squares[row][col].piece.name
                     color = self.squares[row][col].piece.color
-                    self.board[row][col] = str(color[0]) + str(name[:2])
+                    # print(color)
+                    if (name == "knight"):
+                        name = "N"
+                    if (color == "white"):
+                        self.board[row][col] = name[0].upper()
+                    else:
+                        self.board[row][col] = name[0].lower()
                 except:
-                    self.board[row][col] = "---"
+                    self.board[row][col] = "."
 
         for row in range(ROWS):
             for col in range(COLS):
@@ -415,7 +461,6 @@ class Board:
             print()
         print()
         
-        return self.board
 
     def __len__(self):
         return len(self.children)

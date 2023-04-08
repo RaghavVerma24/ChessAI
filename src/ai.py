@@ -1,6 +1,8 @@
 from board import Board
 from const import *
 import sys
+from square import Square
+
 
 class Ai:
 
@@ -53,3 +55,10 @@ class Ai:
                     continue
         
         return white_eval-black_eval        
+    
+    def make_move(self, screen, move):
+        print(move)
+        # move mouse 
+        # click
+        # release
+        pass

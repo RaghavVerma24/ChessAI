@@ -1,5 +1,6 @@
 import pygame
 import sys
+import chess
 
 from const import *
 from game import Game
@@ -30,6 +31,7 @@ class Main:
         self.winnerColor = ""
         self.ai_move = True
         self.start_time = 0
+        self.chessBoard = chess.Board()
 
     def end_game(self, screen, winner):
         pygame.time.delay(500)
@@ -116,9 +118,14 @@ class Main:
 
                 for event in pygame.event.get():
                     if self.ai_starting and self.ai_move:
-                            board.create_child_boards()
-                            # ai.minimax(board.children, board, 3, True) 
-                            self.ai_move = False
+                        print(self.chessBoard.legal_moves)
+                        if (game.next_player == "black"):
+                            print("ai turn")
+                            ai.make_move(screen, list(self.chessBoard.legal_moves)[0])
+                        board.heuristic()
+                        board.create_child_boards(self.chessBoard, False)
+                        # ai.minimax(board.children, board, 3, True) 
+                        self.ai_move = False
                     if self.starting or self.winner != "":
                         if event.type == pygame.MOUSEBUTTONDOWN:
                             mouse = pygame.mouse.get_pos()
@@ -216,8 +223,9 @@ class Main:
                                             game.show_last_move(screen)
                                             game.show_pieces(screen)
                                             # next turn
-                                            board.addMove(piece.name, released_col, released_row, self.ai_starting)
-                                            if (board.checkmate()):
+                                            if (self.ai_starting):
+                                                board.addMove(piece, released_col, released_row, self.ai_starting, self.chessBoard)
+                                            if (board.checkmate(self.chessBoard)):
                                                 if (piece.color == "white"):
                                                     self.winnerColor = "White"
                                                 else:

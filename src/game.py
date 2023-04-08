@@ -88,7 +88,7 @@ class Game:
             pygame.draw.rect(surface, color, rect, width=3)
 
     def show_timer(self, surface, extra):
-        surface.fill((0,0,0))
+        surface.fill((49, 46, 43))
         if (self.next_player == "black"):
             self.elapsed_time[1] = pygame.time.get_ticks()//1000 - self.elapsed_time[0]
             black_timer = self.base_timer - self.elapsed_time[1] + extra
