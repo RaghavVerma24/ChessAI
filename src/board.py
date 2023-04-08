@@ -27,6 +27,7 @@ class Board:
             "rook" : "R",
         }
         self.moves = []
+        self.total_moves = 0
 
     def add_children(self, child):
         # Add all boards that have move possiblities
@@ -90,6 +91,7 @@ class Board:
 
         # move on board
         piece.moved = True
+        self.total_moves += 1
 
         # clear valid moves
         piece.clear_moves()
@@ -117,7 +119,7 @@ class Board:
             "king": 1000,
         }
 
-        white_eval = 0
+        white_eval = 0.01
         black_eval = 0
         for row in range(ROWS):
             for col in range(COLS):
@@ -128,6 +130,23 @@ class Board:
                         white_eval += pieces[self.squares[row][col].piece.name]
                 except:
                     continue
+
+        multiplier = 0
+        if (self.total_moves <= 10):
+            multiplier = 0.64
+        elif (self.total_moves > 10 and self.total_moves <= 20):
+            multiplier = 0.75
+        else:
+            multiplier = 0.83
+
+        if (white_eval < 1025):
+            multiplier *= 1.15
+        elif (white_eval <= 1017):
+            multiplier *= 1.28
+        elif (white_eval <= 1008):
+            multiplier *= 1.35
+
+        return round((white_eval-black_eval)*multiplier, 4)
 
     def in_check(self, piece, move):
 
@@ -165,7 +184,7 @@ class Board:
             chessBoard.push_san(f"{letter}{col}{row}")
         print(self.see_board())
 
-        self.create_child_boards(chessBoard, True)
+        # self.create_child_boards(chessBoard, True)
  
     def calc_moves(self, piece, row, col, bool=True):
 

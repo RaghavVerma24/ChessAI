@@ -6,7 +6,6 @@ from const import *
 from game import Game
 from square import Square
 from move import Move
-from db import Db
 from ai import Ai
 
 import pygame_widgets
@@ -21,7 +20,6 @@ class Main:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('Chess')
         self.game = Game()
-        self.db = Db()
         self.ai = Ai()
         self.starting = True
         self.background = (49, 46, 43)
@@ -82,10 +80,7 @@ class Main:
         game = self.game
         board = self.game.board
         dragger = self.game.dragger
-        db = self.db
         ai = self.ai
-
-        db.get_plays()
 
         while True:
             if self.gameover:
@@ -120,10 +115,8 @@ class Main:
                 for event in pygame.event.get():
                     if self.ai_starting and self.ai_move:
                         print(self.chessBoard.legal_moves)
-                        if (game.next_player == "black"):
-                            print("ai turn")
+                        print("Game Score: ", board.heuristic())
                             # ai.make_move(screen, list(self.chessBoard.legal_moves)[0], self.released)
-                        board.heuristic()
                         board.create_child_boards(self.chessBoard, False)
                         # ai.minimax(board.children, board, 3, True) 
                         self.ai_move = False
@@ -162,7 +155,6 @@ class Main:
                                     try:
                                         if board.squares[clicked_row][clicked_col].has_piece():
                                             piece = board.squares[clicked_row][clicked_col].piece
-                                            print(piece)
 
                                             # find next player turn
                                             try:
@@ -226,8 +218,7 @@ class Main:
                                             game.show_last_move(screen)
                                             game.show_pieces(screen)
                                             # next turn
-                                            if (self.ai_starting):
-                                                board.addMove(piece, released_col, released_row, self.ai_starting, self.chessBoard)
+                                            board.addMove(piece, released_col, released_row, self.ai_starting, self.chessBoard)
                                             if (board.checkmate(self.chessBoard)):
                                                 if (piece.color == "white"):
                                                     self.winnerColor = "White"
@@ -236,6 +227,7 @@ class Main:
                                                 self.winner = "True"
                                                 self.gameover = True          
                                             game.next_turn(self.ai_starting)
+                                            print("Game Score: ", board.heuristic())
                                             self.ai_move = True
                                         
                                         dragger.undrag_piece()
