@@ -2,7 +2,8 @@ from board import Board
 from const import *
 import sys
 from square import Square
-
+import pygame
+import pyautogui
 
 class Ai:
 
@@ -57,8 +58,31 @@ class Ai:
         return white_eval-black_eval        
     
     def make_move(self, screen, move):
-        print(move)
-        # move mouse 
+        cols = {
+            "a" : 1, 
+            "b" : 2,
+            "c" : 3,
+            "d" : 4,
+            "e" : 5,
+            "f" : 6,
+            "g" : 7,
+            "h" : 8
+        }
+
+        move = str(move)
+
+        initial = (cols[move[0]], ROWS - int(move[1]))
+        final = (cols[move[2]], ROWS - int(move[3]))
+        x,y = (GAP + initial[0] * SQSIZE) - SQSIZE//2, (GAP + initial[1] * SQSIZE) + SQSIZE//2
+
+        pygame.mouse.set_pos(x,y)
+        x,y = (GAP + final[0] * SQSIZE) - SQSIZE//2, (GAP + final[1] * SQSIZE) + SQSIZE//2
+        pyautogui.click(button='right', clicks=20, interval=1)
+        pygame.mouse.set_pos(x,y)
+        
+        
+        # autopy.mouse.smooth_move(200,200)
+
         # click
         # release
         pass
