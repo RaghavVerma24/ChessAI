@@ -14,7 +14,7 @@ https://user-images.githubusercontent.com/59304737/227419997-ca29e6de-4dcf-434c-
 <br>
 
 <p float="left" align="center">
-  <img src="https://github.com/RaghavVerma24/ChessAI/blob/main/assets/readme_imgs/game.png?raw=true" alt="Game Screenshot"  width="400" height="400" />
+  ![image](https://user-images.githubusercontent.com/59304737/230733567-d17ddbf6-2531-4d6f-900d-2b4de7196691.png)
   <img src="https://github.com/RaghavVerma24/ChessAI/blob/main/assets/readme_imgs/menu.png?raw=true" alt="Menu Screenshot" width="400" height="400" /> 
 </p>
 
