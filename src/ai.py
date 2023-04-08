@@ -57,7 +57,7 @@ class Ai:
         
         return white_eval-black_eval        
     
-    def make_move(self, screen, move):
+    def make_move(self, screen, move, released):
         cols = {
             "a" : 1, 
             "b" : 2,
@@ -73,16 +73,18 @@ class Ai:
 
         initial = (cols[move[0]], ROWS - int(move[1]))
         final = (cols[move[2]], ROWS - int(move[3]))
-        x,y = (GAP + initial[0] * SQSIZE) - SQSIZE//2, (GAP + initial[1] * SQSIZE) + SQSIZE//2
 
-        pygame.mouse.set_pos(x,y)
-        x,y = (GAP + final[0] * SQSIZE) - SQSIZE//2, (GAP + final[1] * SQSIZE) + SQSIZE//2
-        pyautogui.click(button='right', clicks=20, interval=1)
-        pygame.mouse.set_pos(x,y)
+        # relative position
+        pygame.time.delay(500)
+        distance = self.get_relative_position(initial, (released[0]+1,released[1]))
+        pyautogui.move(distance[0]*SQSIZE, distance[1]*SQSIZE, 2) 
+        print("navigated")
+        # pyautogui.mouseDown(button='left')
+        pyautogui.click()
+        distance = self.get_relative_position(final, initial)
+        pyautogui.drag(distance[0]*SQSIZE, distance[1]*SQSIZE, 2, button='left')
+        print("dragging")
+        # pygame.mouse.set_pos(x,y)
         
-        
-        # autopy.mouse.smooth_move(200,200)
-
-        # click
-        # release
-        pass
+    def get_relative_position(self, move, released):
+        return (move[0]-released[0], move[1]-released[1])

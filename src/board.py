@@ -129,8 +129,6 @@ class Board:
                 except:
                     continue
 
-        print(white_eval, black_eval)
-
     def in_check(self, piece, move):
 
         temp_piece = copy.deepcopy(piece)

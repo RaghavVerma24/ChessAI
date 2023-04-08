@@ -32,6 +32,7 @@ class Main:
         self.ai_move = True
         self.start_time = 0
         self.chessBoard = chess.Board()
+        self.released = ()
 
     def end_game(self, screen, winner):
         pygame.time.delay(500)
@@ -121,7 +122,7 @@ class Main:
                         print(self.chessBoard.legal_moves)
                         if (game.next_player == "black"):
                             print("ai turn")
-                            ai.make_move(screen, list(self.chessBoard.legal_moves)[0])
+                            # ai.make_move(screen, list(self.chessBoard.legal_moves)[0], self.released)
                         board.heuristic()
                         board.create_child_boards(self.chessBoard, False)
                         # ai.minimax(board.children, board, 3, True) 
@@ -161,6 +162,7 @@ class Main:
                                     try:
                                         if board.squares[clicked_row][clicked_col].has_piece():
                                             piece = board.squares[clicked_row][clicked_col].piece
+                                            print(piece)
 
                                             # find next player turn
                                             try:
@@ -208,6 +210,7 @@ class Main:
 
                                         released_row = (dragger.mouseY - GAP) // SQSIZE
                                         released_col = (dragger.mouseX - GAP) // SQSIZE
+                                        self.released = (released_col, released_row)
 
                                         # create possible move
                                         initial = Square(
