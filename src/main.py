@@ -219,7 +219,7 @@ class Main:
                                             game.show_last_move(screen)
                                             game.show_pieces(screen)
                                             # next turn
-                                            board.addMove(piece, released_col, released_row, self.ai_starting, self.chessBoard)
+                                            board.addMove(piece, released_col, released_row, dragger.initial_col, self.ai_starting, self.chessBoard)
                                             if (board.checkmate(self.chessBoard)):
                                                 if (piece.color == "white"):
                                                     self.winnerColor = "White"

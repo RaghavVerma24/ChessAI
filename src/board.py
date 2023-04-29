@@ -175,22 +175,21 @@ class Board:
     def checkmate(self, chessBoard):
         return chessBoard.is_checkmate()
     
-    def addMove(self, piece, col, row, ai, chessBoard):
+    def addMove(self, piece, col, row, initial_col, ai, chessBoard):
         row = ROWS - row
         col = self.boardCol[col]
         if (piece.name == "pawn"):
+            print(chessBoard.legal_moves)
             try:
                 chessBoard.push_san(f"{col}{row}")
             except:
-                pass
+                chessBoard.push_san(f"{self.boardCol[initial_col]}x{col}{row}")
         else:
             letter = "N" if piece.name == "knight" else piece.name[0].upper()
             try:
                 chessBoard.push_san(f"{letter}{col}{row}")
             except:
-                pass
-        print(self.see_board())
-
+                chessBoard.push_san(f"{self.boardCol[initial_col]}x{col}{row}")
         # self.create_child_boards(chessBoard, True)
  
     def calc_moves(self, piece, row, col, bool=True):
