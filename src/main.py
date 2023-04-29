@@ -86,6 +86,7 @@ class Main:
             if self.gameover:
                 self.end_game(screen, self.winnerColor)
                 self.winner = "True"
+                self.chessBoard = chess.Board()                
             else:
                 if (self.winner != "True"):
                     if self.starting:
