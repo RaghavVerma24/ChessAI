@@ -121,6 +121,7 @@ class Board:
 
         white_eval = 0.01
         black_eval = 0
+        white_advantage = 0.32
         for row in range(ROWS):
             for col in range(COLS):
                 try:
@@ -146,7 +147,7 @@ class Board:
         elif (white_eval <= 1008):
             multiplier *= 1.35
 
-        return round((white_eval-black_eval)*multiplier, 4)
+        return round((white_eval-black_eval)*multiplier + white_advantage, 2)
 
     def in_check(self, piece, move):
 
@@ -178,10 +179,16 @@ class Board:
         row = ROWS - row
         col = self.boardCol[col]
         if (piece.name == "pawn"):
-            chessBoard.push_san(f"{col}{row}")
+            try:
+                chessBoard.push_san(f"{col}{row}")
+            except:
+                pass
         else:
             letter = "N" if piece.name == "knight" else piece.name[0].upper()
-            chessBoard.push_san(f"{letter}{col}{row}")
+            try:
+                chessBoard.push_san(f"{letter}{col}{row}")
+            except:
+                pass
         print(self.see_board())
 
         # self.create_child_boards(chessBoard, True)
