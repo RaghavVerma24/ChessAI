@@ -91,7 +91,7 @@ class Game:
         surface.fill((49, 46, 43))
         if (self.next_player == "black"):
             self.elapsed_time[1] = pygame.time.get_ticks()//1000 - self.elapsed_time[0]
-            black_timer = self.base_timer - self.elapsed_time[1] + extra
+            black_timer = self.base_timer - self.elapsed_time[1] 
             white_timer = self.times[0 ]
             if (black_timer >= 0 and white_timer >= 0):
                 white_mins, black_mins = f"0{white_timer//60}" if white_timer//60 < 10 else white_timer//60, f"0{black_timer//60}" if black_timer//60 < 10 else black_timer//60
