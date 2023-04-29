@@ -179,17 +179,24 @@ class Board:
         row = ROWS - row
         col = self.boardCol[col]
         if (piece.name == "pawn"):
-            print(chessBoard.legal_moves)
             try:
                 chessBoard.push_san(f"{col}{row}")
             except:
-                chessBoard.push_san(f"{self.boardCol[initial_col]}x{col}{row}")
+                try:
+                    chessBoard.push_san(f"{self.boardCol[initial_col]}x{col}{row}+")
+                except:
+                    chessBoard.push_san(f"{self.boardCol[initial_col]}x{col}{row}")
         else:
             letter = "N" if piece.name == "knight" else piece.name[0].upper()
             try:
                 chessBoard.push_san(f"{letter}{col}{row}")
             except:
-                chessBoard.push_san(f"{self.boardCol[initial_col]}x{col}{row}")
+                try:
+                    chessBoard.push_san(f"{letter}x{col}{row}+")
+                except:
+                    chessBoard.push_san(f"{letter}x{col}{row}")
+        if (ai):
+            print(chessBoard)
         # self.create_child_boards(chessBoard, True)
  
     def calc_moves(self, piece, row, col, bool=True):
