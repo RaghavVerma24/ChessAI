@@ -115,7 +115,9 @@ class Main:
 
                 for event in pygame.event.get():
                     if self.ai_starting and self.ai_move:
-                        print(self.chessBoard.legal_moves)
+                        print("-----------------------------")
+                        print(f"Move {len(self.chessBoard.move_stack)+1}")
+                        print(f"Possible Moves: {self.chessBoard.legal_moves}")
                         print("Game Score: ", board.heuristic())
                             # ai.make_move(screen, list(self.chessBoard.legal_moves)[0], self.released)
                         board.create_child_boards(self.chessBoard, False)
@@ -220,16 +222,15 @@ class Main:
                                             game.show_pieces(screen)
                                             # next turn
                                             board.addMove(piece, released_col, released_row, dragger.initial_col, self.ai_starting, self.chessBoard)
+                                            game.next_turn(self.ai_starting)
+                                            self.ai_move = True
                                             if (board.checkmate(self.chessBoard)):
                                                 if (piece.color == "white"):
                                                     self.winnerColor = "White"
                                                 else:
                                                     self.winnerColor = "Black"
-                                                self.winner = "True"
+                                                # self.winner = "True"
                                                 self.gameover = True          
-                                            game.next_turn(self.ai_starting)
-                                            print("Game Score: ", board.heuristic())
-                                            self.ai_move = True
                                         
                                         dragger.undrag_piece()
 
@@ -243,6 +244,8 @@ class Main:
                                 dragger = self.game.dragger
                                 self.gameover = False
                                 self.winner = ""
+                                self.chessBoard = chess.Board()
+
 
                             if event.key == pygame.K_q:
                                 self.starting = True
@@ -252,6 +255,7 @@ class Main:
                                 dragger = self.game.dragger
                                 self.gameover = False
                                 self.winner = ""
+                                self.chessBoard = chess.Board()
 
                 # quit app
                 if (event.type == pygame.QUIT):
