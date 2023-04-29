@@ -22,10 +22,7 @@ Features
 Visuals
 -------
 
-<p float="left" align="center">
-  <img src="https://github.com/RaghavVerma24/ChessAI/blob/main/assets/readme_imgs/new_game.png?raw=true" alt="Game Screenshot" width="400" height="400" /> 
-  <img src="https://github.com/RaghavVerma24/ChessAI/blob/main/assets/readme_imgs/menu.png?raw=true" alt="Menu Screenshot" width="400" height="400" /> 
-</p>
+![image](https://user-images.githubusercontent.com/59304737/235328268-a4191761-a6cf-47ff-bc57-e190b96697ef.png)
 
 Installation
 ------------
